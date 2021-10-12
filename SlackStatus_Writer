@@ -25,7 +25,7 @@ return event_status;
 **/
 function postSlackStatus(status) {
 // アクセス情報
-const TOKEN = "xoxp-411972182720-1028692477747-2589774464917-22d44b31063e64fcc6b881545ca9c0e7";
+const TOKEN = "取得したトークンはここ";
 const URL = "https://slack.com/api/users.profile.set";
  
 // HTTPヘッダー
@@ -50,7 +50,7 @@ var fetch = UrlFetchApp.fetch(URL, option);
 **/
 function main() {
 // カレンダーID
-const ID = "ayaka.yamamoto@access-company.com";
+const ID = "連携するカレンダーIDはここ";
 // 今日の日付
 var date = new Date();
 // カレンダーから今日の予定を取得
