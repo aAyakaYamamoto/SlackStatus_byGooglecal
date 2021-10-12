@@ -1,1 +1,87 @@
-{"files":[{"id":"85453aea-4a28-4dd8-abdf-5171800280ed","name":"appsscript","type":"json","source":"{\n  \"timeZone\": \"Asia/Tokyo\",\n  \"dependencies\": {\n  },\n  \"exceptionLogging\": \"STACKDRIVER\",\n  \"runtimeVersion\": \"V8\"\n}"},{"id":"957ca8c6-2955-428d-a1bf-e6c1e5d1f41f","name":"SlackStatus_byGooglecal","type":"server_js","source":"/**\nGoogleカレンダーから取得した現在の予定をSlackステータス用に整形して返却する。\n**/\nfunction createStatusText(event) {\n// 整形した開始時刻・終了時刻\nvar start \u003d event.getStartTime().getHours() + \":\" + (\"00\" + event.getStartTime().getMinutes()).slice(-2);\nvar end \u003d event.getEndTime().getHours() + \":\" + (\"00\" + event.getEndTime().getMinutes()).slice(-2);\n// ステータステキスト\nvar text \u003d event.getTitle() + \"(\" + start + \"〜\" + end + \")\";\n \n// イベントがある時のステータス\nvar event_status \u003d {\n\"profile\": JSON.stringify({\n\"status_text\": text,\n\"status_emoji\": \":google_calender:\"\n})\n};\n \nreturn event_status;\n \n}\n \n/**\n作成したステータスをSlack Web API経由でプロフィールに反映させる。\n**/\nfunction postSlackStatus(status) {\n// アクセス情報\nconst TOKEN \u003d \"xoxp-411972182720-1028692477747-2589774464917-22d44b31063e64fcc6b881545ca9c0e7\";\nconst URL \u003d \"https://slack.com/api/users.profile.set\";\n \n// HTTPヘッダー\nconst headers \u003d {\n\"Authorization\" : \"Bearer \" + TOKEN\n};\n \n//POSTデータ\nvar option \u003d {\n\"Content-Type\": \"application/json\",\n\"headers\": headers,\n\"method\": \"POST\",\n\"payload\": status\n};\n \nvar fetch \u003d UrlFetchApp.fetch(URL, option);\n \n}\n \n/**\nカレンダーから今日の予定を取得し、必要であればSlackステータスを更新する。\n**/\nfunction main() {\n// カレンダーID\nconst ID \u003d \"ayaka.yamamoto@access-company.com\";\n// 今日の日付\nvar date \u003d new Date();\n// カレンダーから今日の予定を取得\nvar calendar \u003d CalendarApp.getCalendarById(ID);\nvar events \u003d calendar.getEventsForDay(date);\n \n// 今日のイベントがない場合は何もしない\nif (events.length !\u003d\u003d 0) {\n \n// イベントがないときのステータス\nvar set_status \u003d {\n\"profile\": JSON.stringify({\n\"status_text\": \"Free time!\",\n\"status_emoji\": \":dancer:\"\n})\n};\n \n// 今日の予定をすべて調査\nfor (var i in events){\n// 終日の予定の場合はスルー\nif (events[i].isAllDayEvent()) {\ncontinue;\n}\n// 今が予定の開始時刻以降で終了時刻以前なら今はその予定の最中 -\u003e ステータス変更\nif (events[i].getStartTime() \u003c\u003d date \u0026\u0026 events[i].getEndTime() \u003e\u003d date) {\nset_status \u003d createStatusText(events[i]);\nbreak;\n}\n}\n \npostSlackStatus(set_status);\n \n}\n}"}]}
+/**
+Googleカレンダーから取得した現在の予定をSlackステータス用に整形して返却する。
+**/
+function createStatusText(event) {
+// 整形した開始時刻・終了時刻
+var start = event.getStartTime().getHours() + ":" + ("00" + event.getStartTime().getMinutes()).slice(-2);
+var end = event.getEndTime().getHours() + ":" + ("00" + event.getEndTime().getMinutes()).slice(-2);
+// ステータステキスト
+var text = event.getTitle() + "(" + start + "〜" + end + ")";
+ 
+// イベントがある時のステータス
+var event_status = {
+"profile": JSON.stringify({
+"status_text": text,
+"status_emoji": ":google_calender:"
+})
+};
+ 
+return event_status;
+ 
+}
+ 
+/**
+作成したステータスをSlack Web API経由でプロフィールに反映させる。
+**/
+function postSlackStatus(status) {
+// アクセス情報
+const TOKEN = "xoxp-411972182720-1028692477747-2589774464917-22d44b31063e64fcc6b881545ca9c0e7";
+const URL = "https://slack.com/api/users.profile.set";
+ 
+// HTTPヘッダー
+const headers = {
+"Authorization" : "Bearer " + TOKEN
+};
+ 
+//POSTデータ
+var option = {
+"Content-Type": "application/json",
+"headers": headers,
+"method": "POST",
+"payload": status
+};
+ 
+var fetch = UrlFetchApp.fetch(URL, option);
+ 
+}
+ 
+/**
+カレンダーから今日の予定を取得し、必要であればSlackステータスを更新する。
+**/
+function main() {
+// カレンダーID
+const ID = "ayaka.yamamoto@access-company.com";
+// 今日の日付
+var date = new Date();
+// カレンダーから今日の予定を取得
+var calendar = CalendarApp.getCalendarById(ID);
+var events = calendar.getEventsForDay(date);
+ 
+// 今日のイベントがない場合は何もしない
+if (events.length !== 0) {
+ 
+// イベントがないときのステータス
+var set_status = {
+"profile": JSON.stringify({
+"status_text": "Free time!",
+"status_emoji": ":dancer:"
+})
+};
+ 
+// 今日の予定をすべて調査
+for (var i in events){
+// 終日の予定の場合はスルー
+if (events[i].isAllDayEvent()) {
+continue;
+}
+// 今が予定の開始時刻以降で終了時刻以前なら今はその予定の最中 -> ステータス変更
+if (events[i].getStartTime() <= date && events[i].getEndTime() >= date) {
+set_status = createStatusText(events[i]);
+break;
+}
+}
+ 
+postSlackStatus(set_status);
+ 
+}
+}
