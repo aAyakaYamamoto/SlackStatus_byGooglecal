@@ -1,56 +1,56 @@
 /**
-Googleカレンダーから取得した現在の予定をSlackステータス用に整形して返却する。
+ Googleカレンダーから取得した現在の予定をSlackステータス用に整形して返却する。
 **/
 function createStatusText(event) {
-// 整形した開始時刻・終了時刻
-var start = event.getStartTime().getHours() + ":" + ("00" + event.getStartTime().getMinutes()).slice(-2);
-var end = event.getEndTime().getHours() + ":" + ("00" + event.getEndTime().getMinutes()).slice(-2);
-// ステータステキスト
-var text = event.getTitle() + "(" + start + "〜" + end + ")";
- 
-// イベントがある時のステータス
-var event_status = {
-"profile": JSON.stringify({
-"status_text": text,
-"status_emoji": ":google_calender:"
-})
-};
- 
-return event_status;
- 
+  // 整形した開始時刻・終了時刻
+  var start = event.getStartTime().getHours() + ":" + ("00" + event.getStartTime().getMinutes()).slice(-2);
+  var end = event.getEndTime().getHours() + ":" + ("00" + event.getEndTime().getMinutes()).slice(-2);
+  // ステータステキスト
+  var text = event.getTitle() + "(" + start + "〜" + end + ")";
+
+  // イベントがある時のステータス
+  var event_status = {
+    "profile": JSON.stringify({
+      "status_text": text,
+      "status_emoji": ":spiral_calendar_pad:"
+    })
+  };
+
+  return event_status;
+
 }
- 
+
 /**
-作成したステータスをSlack Web API経由でプロフィールに反映させる。
+ 作成したステータスをSlack Web API経由でプロフィールに反映させる。
 **/
 function postSlackStatus(status) {
-// アクセス情報
-const TOKEN = "取得したトークンはここ";
-const URL = "https://slack.com/api/users.profile.set";
- 
-// HTTPヘッダー
-const headers = {
-"Authorization" : "Bearer " + TOKEN
-};
- 
-//POSTデータ
-var option = {
-"Content-Type": "application/json",
-"headers": headers,
-"method": "POST",
-"payload": status
-};
- 
-var fetch = UrlFetchApp.fetch(URL, option);
- 
+  // アクセス情報
+  const TOKEN = "TOKENはここ";
+  const URL = "https://slack.com/api/users.profile.set";
+
+  // HTTPヘッダー
+  const headers = {
+    "Authorization" : "Bearer " + TOKEN
+  };
+
+  //POSTデータ
+  var option = {
+    "Content-Type": "application/json",
+    "headers": headers,
+    "method": "POST",
+    "payload": status
+  };
+
+  var fetch = UrlFetchApp.fetch(URL, option);
+
 }
- 
+
 /**
-カレンダーから今日の予定を取得し、必要であればSlackステータスを更新する。
+ カレンダーから今日の予定を取得し、必要であればSlackステータスを更新する。
 **/
 function main() {
 // カレンダーID
-const ID = "連携するカレンダーIDはここ";
+const ID = "googleカレンダーIDはここ";
 // 今日の日付
 var date = new Date();
 // カレンダーから今日の予定を取得
