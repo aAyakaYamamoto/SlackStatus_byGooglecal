@@ -13,7 +13,7 @@ function createStatusText(event) {
     var event_status = {
       // 病院系統のとき
       "profile": JSON.stringify({
-      "status_text": "病院なう",
+      "status_text": "病院なう" + " (" + start + "〜" + end + ")",
       "status_emoji": ":hospital:"
       })
     };
@@ -28,7 +28,7 @@ function createStatusText(event) {
     var event_status = {
       // MTG・定例・1on1・打ち合わせ系統のとき
       "profile": JSON.stringify({
-      "status_text": "MTG中",
+      "status_text": "MTG中" + " (" + start + "〜" + end + ")",
       "status_emoji": ":google_meet_new:"
       })
     };
@@ -44,7 +44,7 @@ function createStatusText(event) {
     var event_status = {
       // ご飯
       "profile": JSON.stringify({
-      "status_text": "ごはん食べてます",
+      "status_text": "ごはん食べてます" + " (" + start + "〜" + end + ")",
       "status_emoji": ":rice_ball:"
       })
     };
@@ -52,7 +52,7 @@ function createStatusText(event) {
     var event_status = {
       // 作業系統
       "profile": JSON.stringify({
-      "status_text": "作業中",
+      "status_text": "作業中" + " (" + start + "〜" + end + ")",
       "status_emoji": ":heads-down:"
       })
     };
@@ -60,7 +60,7 @@ function createStatusText(event) {
     var event_status = {
       // 散歩系統
       "profile": JSON.stringify({
-      "status_text": "散歩中",
+      "status_text": "散歩中" + " (" + start + "〜" + end + ")",
       "status_emoji": ":walking-the-dog:"
       })
     };
@@ -75,7 +75,7 @@ function createStatusText(event) {
     var event_status = {
       // 移動系統
       "profile": JSON.stringify({
-      "status_text": "移動中",
+      "status_text": "移動中" + " (" + start + "〜" + end + ")",
       "status_emoji": ":train:"
       })
     };
