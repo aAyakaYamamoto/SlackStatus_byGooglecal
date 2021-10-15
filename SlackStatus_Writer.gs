@@ -14,14 +14,16 @@ function createStatusText(event) {
       // 病院系統のとき
       "profile": JSON.stringify({
       "status_text": "病院なう" + " (" + start + "〜" + end + ")",
-      "status_emoji": ":hospital:"
+      "status_emoji": ":hospital:",
+      "status_expiration": 0 
       })
     };
   }else if(/(予定あり|外出|訪問|社外)/.test(event.getTitle())){
     var event_status = {
       // 社外のとき
       "profile": JSON.stringify({
-      "status_emoji": ":gaisyutu_now:"
+      "status_emoji": ":gaisyutu_now:",
+      "status_expiration": 0 
       })
     };
   }else if(/(打ち合わせ|社内|MTG|mtg|定例|会議|確定|up|UP|様|on|meet)/.test(event.getTitle())){
@@ -29,7 +31,8 @@ function createStatusText(event) {
       // MTG・定例・1on1・打ち合わせ系統のとき
       "profile": JSON.stringify({
       "status_text": "MTG中" + " (" + start + "〜" + end + ")",
-      "status_emoji": ":google_meet_new:"
+      "status_emoji": ":google_meet_new:",
+      "status_expiration": 0 
       })
     };
   }else if(/(休|午後|午前)/.test(event.getTitle())){
@@ -37,7 +40,8 @@ function createStatusText(event) {
       // 休暇系統のとき
       "profile": JSON.stringify({
       "status_text": text,
-      "status_emoji": ":palm_tree:"
+      "status_emoji": ":palm_tree:",
+      "status_expiration": 0 
       })
     };
   }else if(/(LUNCH|lunch|Lunch|お昼|おひる|ご飯|ごはん)/.test(event.getTitle())){
@@ -45,7 +49,8 @@ function createStatusText(event) {
       // ご飯
       "profile": JSON.stringify({
       "status_text": "ごはん食べてます" + " (" + start + "〜" + end + ")",
-      "status_emoji": ":rice_ball:"
+      "status_emoji": ":rice_ball:",
+      "status_expiration": 0 
       })
     };
   }else if(/(作業|自作業|TODO|todo|Todo|案件作業)/.test(event.getTitle())){
@@ -53,7 +58,8 @@ function createStatusText(event) {
       // 作業系統
       "profile": JSON.stringify({
       "status_text": "作業中" + " (" + start + "〜" + end + ")",
-      "status_emoji": ":heads-down:"
+      "status_emoji": ":heads-down:",
+      "status_expiration": 0 
       })
     };
   }else if(/(dog|cat|散歩|walk)/.test(event.getTitle())){
@@ -61,14 +67,16 @@ function createStatusText(event) {
       // 散歩系統
       "profile": JSON.stringify({
       "status_text": "散歩中" + " (" + start + "〜" + end + ")",
-      "status_emoji": ":walking-the-dog:"
+      "status_emoji": ":walking-the-dog:",
+      "status_expiration": 0 
       })
     };
   }else if(/(退社|退勤|定時)/.test(event.getTitle())){
     var event_status = {
       // 退勤系統
       "profile": JSON.stringify({
-      "status_emoji": ":taikinn:"
+      "status_emoji": ":taikinn:",
+      "status_expiration": 0 
       })
     };
   }else if(/(出社|移動)/.test(event.getTitle())){
@@ -76,7 +84,8 @@ function createStatusText(event) {
       // 移動系統
       "profile": JSON.stringify({
       "status_text": "移動中" + " (" + start + "〜" + end + ")",
-      "status_emoji": ":train:"
+      "status_emoji": ":train:",
+      "status_expiration": 0 
       })
     };
   }else{
@@ -84,7 +93,8 @@ function createStatusText(event) {
       // それ以外の予定
       "profile": JSON.stringify({
       "status_text": text,
-      "status_emoji": ":spiral_calendar_pad:"
+      "status_emoji": ":spiral_calendar_pad:",
+      "status_expiration": 0 
       })
     };
   }
@@ -134,7 +144,8 @@ function main() {
     var set_status = {
       "profile": JSON.stringify({
       "status_text": "MTG/Talk/Huddle OK Time!",
-      "status_emoji": ":shigotoneko:"
+      "status_emoji": ":shigotoneko:",
+      "status_expiration": 0 
       })
     };
     for (var i in events){
